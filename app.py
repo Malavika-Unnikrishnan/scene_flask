@@ -12,6 +12,10 @@ UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
+@app.route("/", methods=["GET"])
+def home():
+    return "Welcome to the Scene Analysis API. Use /predict for image analysis."
+
 @app.route("/predict", methods=["POST"])
 def predict():
     # Check if an image file was uploaded
