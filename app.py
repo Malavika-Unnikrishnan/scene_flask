@@ -12,6 +12,10 @@ UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
+@app.route("/")
+def home():
+    return "Welcome to the Scene Analysis API!"
+
 @app.route("/predict", methods=["POST"])
 def predict():
     # Check if an image file was uploaded
@@ -25,10 +29,9 @@ def predict():
 
     try:
         # Use the Gradio client to process the image
-        result = client.predict(
-            handle_file(image_path),
-            api_name="/predict"
-        )
+        with open(image_path, 'rb') as f:
+            result = client.predict(f, api_name="/predict")
+        
         return jsonify({"result": result}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
